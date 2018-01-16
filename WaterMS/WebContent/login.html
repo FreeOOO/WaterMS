@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>淮阴水利有限公司综合管理信息系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="淮阴水利有限公司综合管理信息系统" />
+<meta name="keywords" content="淮阴,综合管理信息系统,企业网站" />
+<style type="text/css">
+body {
+	text-align: center;
+	margin: 30px auto;
+	width: 100%;
+}
+
+div {
+	height: 41px;
+	background: url('./Images/login_top_bg.gif');
+}
+
+form {
+	background: url(./Images/login_bg.jpg) repeat-x;
+	height: 532px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+table {
+	margin: 0 auto;
+	padding-top: 10%
+}
+
+h4 {
+	letter-spacing: 1px;
+	font-size: 16px;
+}
+</style>
+</head>
+<body>
+	<div></div>
+	<form action="checkUser.spring" method="post">
+		<table>
+			<tr>
+				<td colspan="2"><h4>淮阴水利有限公司综合管理信息系统</h4></td>
+			</tr>
+			<tr>
+				<td>用户编号：</td>
+				<td><input type="text" name="user" value="" /></td>
+			</tr>
+			<tr>
+				<td>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+				<td><input type="password" name="pwd" value="" /></td>
+			</tr>
+			<tr class="bt" align="center">
+				<td>&nbsp;<input type="submit" value="登陆" /></td>
+				<td>&nbsp;<input type="reset" value="重填" /></td>
+			</tr>
+		</table>
+	</form>
+	<div></div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-4.0.xsd
+          http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+          http://www.springframework.org/schema/task
+          http://www.springframework.org/schema/task/spring-task-4.0.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+          http://www.springframework.org/schema/aop
+          http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+          http://www.springframework.org/schema/mvc 
+          http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+          <!-- default-lazy-init ="true" 加上这句加快启动-->
+	
+	<!-- 在controller包中扫描带@Controller的控制层java代码 -->
+	<context:component-scan base-package="lmx.controller,lmx.service.impl,lmx.dao.impl,lmx.entities,lmx.extend,lmx.task" />
+	
+	<!-- 读取数据库配置信息 -->
+	<context:property-placeholder location="classpath:db.properties" />
+
+	<!-- 配置数据库 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="connection.characterEncoding" value="${jdbc.encoding}" />
+	</bean>
+	
+	<!-- 本地会话工厂bean(spring整合hibernate的核心入口) -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>lmx.entities</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 添加以下mvc的注解驱动配置，一切变成“自动化” -->
+	<mvc:annotation-driven />
+	
+	<!--文件上传解析器 DispatcherServlet并不知道如何处理multipart的表单数据，需要一个multipart解析器将post请求的数据抽取处理，然后再将数据通过DispatcherServlet传递给Controller-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="2048000000"></property>
+    </bean>
+	
+	<!-- 配置PDF打印的权值 -->
+	<bean id="viewResolver1" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+  		<property name="order" value="1"/>
+  		<property name="basename" value="views"/>
+	</bean>
+	
+	<bean id="viewResolver2"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  		<property name="order" value="2"/>
+	</bean>
+	<!-- 配置PDF打印的权值结束 -->
+	
+	<!-- 定时器开关-->
+	<task:annotation-driven />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!-- 服务器 -->
+        <property name="host" value="smtp.163.com" />
+        <!-- 端口号 -->
+        <property name="port" value="25" />
+        <!-- 用户名 -->
+        <property name="username" value="iamluosa968@163.com" />
+        <!--  密码   -->
+        <property name="password" value="luo194618" />
+        <!-- SMTP服务器验证 -->
+        <property name="javaMailProperties">
+            <props>
+                <!-- 验证身份 -->
+                <prop key="mail.smtp.auth">true</prop>
+           </props>
+        </property>
+    </bean>
+	<bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <!-- 发件人email -->
+        <property name="from" value="iamluosa968@163.com" />
+    </bean>
+    
+    <bean id="page" class="lmx.entities.Page">
+		<property name="page" value="1"></property>
+		<property name="limit" value="15"></property>
+	</bean>
+	
+	<bean id="wageServiceImpl" class="lmx.service.impl.WageServiceImpl">
+		<property name="medicalinsurancer" value="${wage.medicalinsurancer}"></property>
+		<property name="unemploymentinsurancer" value="${wage.unemploymentinsurancer}"></property>
+		<property name="pensionr" value="${wage.pensionr}"></property>
+		<property name="housingfundr" value="${wage.housingfundr}"></property>
+	</bean>
+		
+	<bean id="socialSecurityServiceImpl" class="lmx.service.impl.SocialSecurityServiceImpl">
+		<property name="medicalinsurancer" value="${wage.medicalinsurancer}"></property>
+		<property name="unemploymentinsurancer" value="${wage.unemploymentinsurancer}"></property>
+		<property name="pensionr" value="${wage.pensionr}"></property>
+		<property name="medicalInsuranceUnitr" value="${ss.medicalInsuranceUnitr}"></property>
+		<property name="unemploymentInsuranceUnitr" value="${ss.unemploymentInsuranceUnitr}"></property>
+		<property name="endowmentinsurancer" value="${ss.endowmentinsurancer}"></property>
+		<property name="unitmaternityinsurancer" value="${ss.unitmaternityinsurancer}"></property>
+		<property name="injuryinsuranceunitr" value="${ss.injuryinsuranceunitr}"></property>
+	</bean>
+	
+	<!-- <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
+	</bean> -->
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/"></bean> -->
+</beans>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="./CSS/skin.css" />
+<!-- <script type="text/javascript">
+	function logout() {
+		if (window.confirm('您确定要退出吗？')) {
+			top.location = 'login.html';
+		}
+	}
+	function getQueryString(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null)
+			return decodeURI(r[2]);
+		return null;
+	}
+	window.onload = setLogin;
+	function setLogin() {
+		var bTag = document.getElementsByTagName("b")[0];
+		if (bTag) {
+			bTag.innerHTML = /* "编号：" + getQueryString("")
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;职务："
+					+ decodeURI(getQueryString("loginPost"))
+					+ "&nbsp;&nbsp;&nbsp;&nbsp; */姓名："
+					+ decodeURI(getQueryString("usersession"))
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;";
+		}
+	}
+</script> -->
+</head>
+<body>
+	<table
+		style="cellpadding: 0; width: 100%; height: 64; background: url(./Images/top_top_bg.gif)">
+		<tr valign="top">
+			<td width="50%"><a href="javascript:void(0)"><img
+					style="border: none" src="./Images/logo.png" /></a></td>
+			<td width="50%"
+				style="padding-top: 13px; font: 15px Arial, SimSun, sans-serif; color: #FFF"><b></b>
+				您好，感谢登陆使用！</td>
+			<td style="padding-top: 10px;" align="center"><a
+				href="javascript:void(0)"><img style="border: none"
+					src="./Images/index.gif" /></a></td>
+			<td style="padding-top: 10px;" align="center"><a
+				href="javascript:void(0)"></a><img style="border: none"
+				src="./Images/out.gif" onclick="logout();" /></td>
+		</tr>
+	</table>
+</body>
+</html>
